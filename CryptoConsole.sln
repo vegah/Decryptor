@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoConsole", "CryptoConsole\CryptoConsole.csproj", "{240A1372-5835-41AD-8D97-DAE02E9D7A01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoLib", "CryptoLib\CryptoLib.csproj", "{1E798980-D1F2-4B42-A543-27388E508E48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{240A1372-5835-41AD-8D97-DAE02E9D7A01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{240A1372-5835-41AD-8D97-DAE02E9D7A01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{240A1372-5835-41AD-8D97-DAE02E9D7A01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{240A1372-5835-41AD-8D97-DAE02E9D7A01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E798980-D1F2-4B42-A543-27388E508E48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E798980-D1F2-4B42-A543-27388E508E48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E798980-D1F2-4B42-A543-27388E508E48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E798980-D1F2-4B42-A543-27388E508E48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
