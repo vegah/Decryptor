@@ -1,4 +1,19 @@
-﻿using CryptoLib.Knowledge;
+﻿/*
+     Copyright 2013 Vegard Berget
+
+       Licensed under the Apache License, Version 2.0 (the "License");
+       you may not use this file except in compliance with the License.
+       You may obtain a copy of the License at
+
+           http://www.apache.org/licenses/LICENSE-2.0
+
+       Unless required by applicable law or agreed to in writing, software
+       distributed under the License is distributed on an "AS IS" BASIS,
+       WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+       See the License for the specific language governing permissions and
+       limitations under the License.
+*/ 
+using CryptoLib.Knowledge;
 using CryptoLib.SimpleSubstitution;
 using System;
 using System.Collections.Generic;
@@ -16,79 +31,42 @@ namespace CryptoConsole
 
         static void Main(string[] args)
         {
-            QuadGramCollection collection = new QuadGramCollection();
-            collection.GenerateFromFile(@"C:\development\crypto\tekster\warandpeace.txt");
-            // Test random string generation and mutation...
-            Decrypt decrypt;
-            using (TextReader reader = new StreamReader(@"C:\development\crypto\tekster\ciphertext1.txt"))
+            Console.WriteLine("usage CryptoConsole.exe <txtfiletolearnfrom> <texttodecrypt>");
+            if (args.Length != 2)
             {
-                decrypt = new Decrypt(reader.ReadToEnd()); // From wikipedia
+                Console.WriteLine("Less or more than 2 arguments supplied");
             }
-            //String isThisCorrect = decrypt.TryKey("ZEBRASCDFGHIJKLMNOPQTUVWXY");
-            //Console.WriteLine(isThisCorrect);
-            
-            String startKey = GenerateRandomKey();
-            Random rand = new Random();
-            Int32 counter = 0;
-            double bestScore = double.MinValue;
-            String bestKey = "";
-            while (true)
+            else
             {
-                char[] mutation = startKey.ToArray();
-                for (Int32 i = 0; i < mutations; i++)
+                Console.WriteLine("Running......");
+                QuadGramCollection collection = new QuadGramCollection();
+                collection.GenerateFromFile(args[0]);
+                // Test random string generation and mutation...
+                String fileContent;
+                using (TextReader reader = new StreamReader(args[1]))
                 {
-                    Int32 switch1 = rand.Next(startKey.Length);
-                    Int32 switch2 = rand.Next(startKey.Length);
-                    char c1 = mutation[switch2];
-                    char c2 = mutation[switch1];
-                    mutation[switch2] = c2;
-                    mutation[switch1] = c1;
+                    fileContent = reader.ReadToEnd(); // From wikipedia
                 }
-                String mutatedKey = new String(mutation);
-                String oldValue = decrypt.TryKey(startKey);
-                String newValue = decrypt.TryKey(mutatedKey);
-                double score1 = collection.ScoreString(oldValue);
-                double score2 = collection.ScoreString(newValue);
-                if (score2 > score1)
+                Cracker cracker = new Cracker(fileContent, collection, 2, 1000);
+
+                DateTime oldTime = DateTime.Now;
+                DateTime started = oldTime;
+                while (true)
                 {
-                    startKey = mutatedKey;
-                    //Console.WriteLine("{0} - {1} : {2} - {3}", startKey, mutatedKey, oldValue, newValue);
-                    counter = 0;
-                    if (score2 > bestScore)
+                    cracker.Try();
+                    DateTime newTime = DateTime.Now;
+                    if ((newTime - oldTime).TotalMilliseconds > 1000)
                     {
-                        bestScore = score2;
-                        bestKey = mutatedKey;
-                        Console.WriteLine(newValue);
+                        Console.SetCursorPosition(0, 4);
+                        Console.WriteLine("Running for {0} ms     ", (newTime - started).TotalMilliseconds);
+                        Console.WriteLine("Best score is {0}", cracker.Bestscore);
+                        Console.WriteLine("Best key is {0}", cracker.BestKey);
+                        Console.WriteLine("First 200 characters of solution is:\n {0}", cracker.BestTry.Substring(0, cracker.BestTry.Length > 200 ? 200 : cracker.BestTry.Length));
+                        oldTime = newTime;
                     }
                 }
-                counter++;
-                if (counter > maxIterationsBeforeNewRandomKey)
-                {
-                    startKey = GenerateRandomKey();
-                    Console.Clear();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("Current score {0}", bestScore);
-                    Console.WriteLine("Current key {0}", bestKey);
-                    String decrypted = decrypt.TryKey(bestKey);
-                    Console.WriteLine("Current first 200 chars {0}", decrypted.Substring(0,decrypted.Length>200 ? 200 : decrypted.Length));
-                    Console.ForegroundColor = ConsoleColor.White;
-                }
             }
-            Console.ReadLine();
         }
 
-        private static String GenerateRandomKey()
-        {
-            char[] alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToArray();
-            List<char> alph = new List<char>(alphabet);
-            Random rand = new Random();
-            for (Int32 i = 0; i < alphabet.Length; i++)
-            {
-                Int32 nr = rand.Next(alph.Count);
-                alphabet[i] = alph[nr];
-                alph.RemoveAt(nr);
-            }
-            return new String(alphabet);
-        }
     }
 }
