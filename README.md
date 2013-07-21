@@ -3,7 +3,9 @@ Decryptor
 
 Very simple substitution encryption cracker using quadgram's to analyze the text.
 
-Right now the cracking logic is all in program.cs, which of course is messy etc.  But it works as long as the text is long.
+Right now the cracking logic is all in program.cs, which of course is messy etc.  
+
+It seems works as long as the text is long.
 
 QuadGramCollection.GenerateFromFile stores QuadGrams for a given text.  If the text you are cracking is in english, you will need to have a large english text to load here.
 
