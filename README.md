@@ -14,3 +14,5 @@ During cracking it will show you a status with best key and first 200 characters
 
 The program runs until ctrl-c is pressed.
 
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/fbfd79b48832ea0286f82033c205b898 "githalytics.com")](http://githalytics.com/vegah/Decryptor)
+
